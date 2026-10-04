@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include "calculator.h"
 
+/* Scope - File-scope static state. */
 static int total_calculations = 0;
 
+/* Functions - Define a reusable operation. */
 double add(double a, double b)
 {
     total_calculations++;
@@ -27,6 +29,7 @@ double divide(double a, double b)
     return a / b;
 }
 
+/* Function Parameters - Receive history and count. */
 void print_history(const Calculation *history, int count)
 {
     printf("\n--- Calculation History ---\n");
@@ -36,6 +39,7 @@ void print_history(const Calculation *history, int count)
         return;
     }
 
+    /* For Loop - Process each history entry. */
     for (int i = 0; i < count; i++) {
         printf("%d: %.2f %c %.2f = %.2f\n",
                i + 1,

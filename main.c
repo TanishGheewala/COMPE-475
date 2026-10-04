@@ -1,3 +1,5 @@
+/* Comments - Brief labels for non-obvious concepts. */
+/* Syntax - Include directives. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -5,27 +7,32 @@
 
 #include "calculator.h"
 
-#define MAX_HISTORY 20
+#define MAX_HISTORY 20 /* Constants - Named macro. */
 #define DEFAULT_HISTORY 5
 
 int main(void)
 {
+    /* Syntax - Main function and block. */
     User user;
 
+    /* Output - Meaningful printf results. */
     printf("=== Simple Calculator ===\n");
 
     printf("Enter your name: ");
 
+    /* User Input - Read and validate a name. */
     if (fgets(user.name, MAX_NAME, stdin) == NULL) {
         printf("Error reading name.\n");
         return 1;
     }
 
-    // Remove newline added by fgets
+    /* Strings - Safely keep a null-terminated name. */
     user.name[strcspn(user.name, "\n")] = '\0';
 
+    /* Memory Address - & obtains the user's address. */
     User *user_ptr = &user;
 
+    /* Pointers - Valid typed pointer dereference. */
     if (user_ptr == NULL) {
         printf("Invalid user pointer.\n");
         return 1;
@@ -34,7 +41,7 @@ int main(void)
     printf("\nWelcome, %s!\n", user_ptr->name);
     printf("User structure address: %p\n", (void *)&user);
 
-    int history_capacity;
+    int history_capacity; /* Variables - Named storage. */
 
     printf("\nHow many calculations should be stored? ");
     
@@ -44,13 +51,14 @@ int main(void)
 
         history_capacity = DEFAULT_HISTORY;
 
-        // Clear invalid characters from input buffer
+        /* While Loop - Clear input until newline. */
         int ch;
         while ((ch = getchar()) != '\n' && ch != EOF) {
-            // discard input
+            /* Break/Continue - Discard bad input. */
         }
     }
 
+    /* Operators - Comparison and logical operators. */
     if (history_capacity < 1 || history_capacity > MAX_HISTORY) {
         printf("History size must be between 1 and %d.\n",
                MAX_HISTORY);
@@ -60,6 +68,7 @@ int main(void)
         history_capacity = DEFAULT_HISTORY;
     }
 
+    /* Memory Management - Allocate and check ownership. */
     Calculation *history = malloc(history_capacity * sizeof(Calculation));
 
     if (history == NULL) {
@@ -69,6 +78,7 @@ int main(void)
 
     int history_count = 0;
 
+    /* Function Pointers - Select an operation. */
     Operation operations[4] = {
         add,
         subtract,
@@ -76,6 +86,7 @@ int main(void)
         divide
     };
 
+    /* Arrays - Related operation symbols. */
     char symbols[4] = {
         '+',
         '-',
@@ -83,8 +94,9 @@ int main(void)
         '/'
     };
 
-    bool running = true;
+    bool running = true; /* Booleans - Controls the menu. */
 
+    /* While Loop - Repeat while the menu is active. */
     while (running) {
 
         int choice;
@@ -104,12 +116,13 @@ int main(void)
 
             int ch;
             while ((ch = getchar()) != '\n' && ch != EOF) {
-                // discard invalid input 
+                /* Break/Continue - Skip invalid input. */
             }
 
             continue;
         }
 
+        /* Switch - Choose among named cases. */
         switch (choice) {
 
             case 1:
@@ -128,7 +141,7 @@ int main(void)
 
                     int ch;
                     while ((ch = getchar()) != '\n' && ch != EOF) {
-                        // discard invalid input
+                        /* Clear the remaining invalid input. */
                     }
 
                     continue;
@@ -139,6 +152,7 @@ int main(void)
                     continue;
                 }
 
+                /* Type Conversion - Integers become doubles. */
                 double a = (double)first;
                 double b = (double)second;
 
@@ -150,6 +164,7 @@ int main(void)
                     continue;
                 }
 
+                /* Function Parameters - Pass operands. */
                 double result = selected_operation(a, b);
 
                 printf("%.2f %c %.2f = %.2f\n",
@@ -158,6 +173,7 @@ int main(void)
                        b,
                        result);
 
+                /* If...Else - Store or report full history. */
                 if (history_count < history_capacity) {
 
                     history[history_count].a = a;
@@ -190,7 +206,7 @@ int main(void)
         }
     }
 
-    free(history);
+    free(history); /* Memory Management - Release allocated memory. */
 
     history = NULL;
 
